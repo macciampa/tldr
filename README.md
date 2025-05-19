@@ -1,6 +1,6 @@
-# Page Summarizer Chrome Extension
+# TLDR - Web Page Summarizer
 
-A Chrome extension that uses OpenAI's GPT-3.5 to summarize web pages, with the API key securely stored in AWS Secrets Manager.
+A Chrome extension that provides quick summaries of web pages using OpenAI's GPT-3.5, with the API key securely stored in AWS Secrets Manager.
 
 ## Setup Instructions
 

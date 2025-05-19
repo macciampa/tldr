@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Hello World Extension",
+  "name": "TLDR",
   "version": "1.0",
-  "description": "A simple Hello World Chrome extension",
+  "description": "A Chrome extension that provides quick summaries of web pages",
   "permissions": [
     "activeTab",
     "scripting",
