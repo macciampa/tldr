@@ -7,6 +7,13 @@ document.addEventListener('DOMContentLoaded', function() {
     const loadingDiv = document.querySelector('.loading');
     const errorDiv = document.querySelector('.error');
     const successDiv = document.querySelector('.success');
+    const settingsLink = document.getElementById('settingsLink');
+
+    // Open settings page when settings link is clicked
+    settingsLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        chrome.runtime.openOptionsPage();
+    });
 
     // AWS Lambda endpoint URL
     const LAMBDA_URL = 'https://rvpdzimdmnj5gmdjkw6fauxmha0kqwnz.lambda-url.us-east-2.on.aws/';
