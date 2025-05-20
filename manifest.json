@@ -3,11 +3,7 @@
   "name": "TLDR",
   "version": "1.0",
   "description": "Save time and energy with our quick and easy summaries",
-  "permissions": [
-    "activeTab",
-    "scripting",
-    "storage"
-  ],
+  "permissions": [],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {
@@ -26,6 +22,5 @@
       "matches": ["<all_urls>"],
       "js": ["content.js"]
     }
-  ],
-  "host_permissions": ["<all_urls>"]
+  ]
 } 
