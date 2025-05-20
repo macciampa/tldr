@@ -11,6 +11,13 @@ document.addEventListener('DOMContentLoaded', function() {
     // AWS Lambda endpoint URL
     const LAMBDA_URL = 'https://rvpdzimdmnj5gmdjkw6fauxmha0kqwnz.lambda-url.us-east-2.on.aws/';
 
+    // Load theme preference
+    chrome.storage.sync.get(['useDarkTheme'], function(result) {
+        if (result.useDarkTheme) {
+            document.body.setAttribute('data-theme', 'dark');
+        }
+    });
+
     function setLoading(isLoading) {
         summarizeBtn.disabled = isLoading;
         loadingDiv.style.display = isLoading ? 'block' : 'none';
@@ -51,6 +58,10 @@ document.addEventListener('DOMContentLoaded', function() {
         summaryBox.textContent = '';
 
         try {
+            // Get user preferences
+            const preferences = await chrome.storage.sync.get(['useBulletPoints']);
+            const useBulletPoints = preferences.useBulletPoints || false;
+
             // Get API key from AWS
             const apiKey = await getApiKey();
             
@@ -76,7 +87,9 @@ document.addEventListener('DOMContentLoaded', function() {
                     messages: [
                         {
                             role: 'system',
-                            content: 'You are a helpful assistant that summarizes web pages. Provide a concise summary of the main points.'
+                            content: useBulletPoints 
+                                ? 'You are a helpful assistant that summarizes web pages. Provide a concise summary of the main points in bullet point format.'
+                                : 'You are a helpful assistant that summarizes web pages. Provide a concise summary of the main points.'
                         },
                         {
                             role: 'user',
@@ -95,8 +108,20 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
             const summary = data.choices[0].message.content;
 
-            // Display the summary
-            summaryBox.textContent = summary;
+            // Format the summary if bullet points are enabled
+            if (useBulletPoints) {
+                // Split by bullet points and join with line breaks
+                const formattedSummary = summary
+                    .split(/[•\-\*]/)  // Split by common bullet point characters
+                    .map(point => point.trim())
+                    .filter(point => point.length > 0)  // Remove empty points
+                    .map(point => `- ${point}`)  // Use hyphen instead of bullet point
+                    .join('\n\n');  // Add double line breaks between points
+                
+                summaryBox.textContent = formattedSummary;
+            } else {
+                summaryBox.textContent = summary;
+            }
             showSuccess();
         } catch (error) {
             console.error('Error:', error);

@@ -7,9 +7,20 @@
       --primary-color: #2563eb;
       --primary-hover: #1d4ed8;
       --text-color: #1f2937;
+      --bg-color: #ffffff;
       --border-color: #e5e7eb;
       --error-color: #dc2626;
       --success-color: #059669;
+    }
+
+    [data-theme="dark"] {
+      --primary-color: #3b82f6;
+      --primary-hover: #60a5fa;
+      --text-color: #f3f4f6;
+      --bg-color: #1f2937;
+      --border-color: #374151;
+      --error-color: #ef4444;
+      --success-color: #10b981;
     }
 
     body {
@@ -17,7 +28,7 @@
       padding: 24px;
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       color: var(--text-color);
-      background-color: #ffffff;
+      background-color: var(--bg-color);
     }
 
     h1 {
@@ -74,8 +85,9 @@
       border-radius: 8px;
       font-size: 15px;
       line-height: 1.6;
-      background-color: #f9fafb;
+      background-color: var(--bg-color);
       transition: all 0.2s ease;
+      white-space: pre-wrap;
     }
 
     #summaryBox:empty {
