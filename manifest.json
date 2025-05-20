@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "TLDR",
   "version": "1.0",
-  "description": "A Chrome extension that provides quick summaries of web pages",
+  "description": "Save time and energy with our quick and easy summaries",
   "permissions": [
     "activeTab",
     "scripting",

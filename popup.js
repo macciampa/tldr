@@ -6,9 +6,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const summaryBox = document.getElementById('summaryBox');
     const loadingDiv = document.querySelector('.loading');
     const errorDiv = document.querySelector('.error');
+    const successDiv = document.querySelector('.success');
 
-    // AWS Lambda endpoint URL - Replace with your actual Lambda URL
+    // AWS Lambda endpoint URL
     const LAMBDA_URL = 'https://rvpdzimdmnj5gmdjkw6fauxmha0kqwnz.lambda-url.us-east-2.on.aws/';
+
+    function setLoading(isLoading) {
+        summarizeBtn.disabled = isLoading;
+        loadingDiv.style.display = isLoading ? 'block' : 'none';
+        errorDiv.style.display = 'none';
+        successDiv.style.display = 'none';
+    }
+
+    function showError(message) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        successDiv.style.display = 'none';
+    }
+
+    function showSuccess() {
+        successDiv.style.display = 'block';
+        errorDiv.style.display = 'none';
+        setTimeout(() => {
+            successDiv.style.display = 'none';
+        }, 2000);
+    }
 
     async function getApiKey() {
         try {
@@ -25,10 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     summarizeBtn.addEventListener('click', async function() {
-        // Show loading state
-        summarizeBtn.disabled = true;
-        loadingDiv.style.display = 'block';
-        errorDiv.style.display = 'none';
+        setLoading(true);
         summaryBox.textContent = '';
 
         try {
@@ -78,14 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Display the summary
             summaryBox.textContent = summary;
+            showSuccess();
         } catch (error) {
             console.error('Error:', error);
-            errorDiv.textContent = 'Error generating summary. Please try again later.';
-            errorDiv.style.display = 'block';
+            showError('Error generating summary. Please try again later.');
         } finally {
-            // Hide loading state
-            summarizeBtn.disabled = false;
-            loadingDiv.style.display = 'none';
+            setLoading(false);
         }
     });
 }); 
