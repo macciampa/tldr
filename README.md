@@ -1,39 +1,25 @@
 # TLDR - Web Page Summarizer
 
-A Chrome extension that provides quick summaries of web pages using OpenAI's GPT-3.5, with the API key securely stored in AWS Secrets Manager.
+A Chrome extension that provides quick summaries of web pages using OpenAI's GPT-3.5. The extension uses your OpenAI API key to generate concise summaries of any webpage.
+
+## Features
+
+- Quick and easy webpage summarization
+- Support for both bullet point and paragraph summaries
+- Light and dark theme support
+- Secure local storage of your API key
+- Works on any webpage
 
 ## Setup Instructions
 
-### AWS Configuration
+### OpenAI API Key Setup
 
-1. Create a secret in AWS Secrets Manager:
-   ```bash
-   aws secretsmanager create-secret --name openai-api-key --secret-string '{"OPENAI_API_KEY":"your-openai-api-key"}'
-   ```
-
-2. Deploy the Lambda function:
-   - Create a new Lambda function
-   - Copy the code from `backend/lambda_function.py`
-   - Set the environment variables:
-     - `SECRET_NAME`: The name of your secret (e.g., "openai-api-key")
-     - `AWS_REGION`: Your AWS region
-   - Configure the Lambda function's IAM role with the following permissions:
-     ```json
-     {
-         "Version": "2012-10-17",
-         "Statement": [
-             {
-                 "Effect": "Allow",
-                 "Action": [
-                     "secretsmanager:GetSecretValue"
-                 ],
-                 "Resource": "arn:aws:secretsmanager:*:*:secret:openai-api-key-*"
-             }
-         ]
-     }
-     ```
-   - Enable CORS for your Lambda function URL
-   - Copy the Lambda function URL and update `LAMBDA_URL` in `popup.js`
+1. Get your OpenAI API key:
+   - Go to [OpenAI API Keys](https://platform.openai.com/api-keys)
+   - Sign in or create an account
+   - Click "Create new secret key"
+   - Copy your API key (it starts with "sk-")
+   - Note: You'll need to add a payment method to your OpenAI account to use the API
 
 ### Extension Setup
 
@@ -42,6 +28,8 @@ A Chrome extension that provides quick summaries of web pages using OpenAI's GPT
 3. Click "Load unpacked" button
 4. Select the directory containing this extension's files
 5. The extension should now appear in your Chrome toolbar
+6. Click the extension icon and go to Settings
+7. Paste your OpenAI API key in the settings page
 
 ## Usage
 
@@ -55,16 +43,14 @@ A Chrome extension that provides quick summaries of web pages using OpenAI's GPT
 - `popup.html`: The popup UI
 - `popup.js`: JavaScript for the popup
 - `content.js`: Content script for extracting page content
-- `backend/`: Contains AWS Lambda function code
-  - `lambda_function.py`: Lambda function to fetch API key
-  - `requirements.txt`: Python dependencies for Lambda
+- `settings.html`: Settings page for API key and preferences
+- `settings.js`: JavaScript for settings page
 
 ## Security Notes
 
-- The OpenAI API key is stored securely in AWS Secrets Manager
-- The Lambda function uses IAM roles for access control
-- CORS is configured on the Lambda function to restrict access
-- All API calls are made server-side through AWS Lambda
+- Your OpenAI API key is stored locally in your browser's storage
+- The key is never sent to any servers other than OpenAI's API
+- All API calls are made directly from your browser to OpenAI
 
 ## Note
 You'll need to add icon files in the following sizes:
