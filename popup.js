@@ -9,6 +9,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const successDiv = document.querySelector('.success');
     const settingsLink = document.getElementById('settingsLink');
 
+    // Check for API key when popup opens
+    chrome.storage.sync.get(['openaiApiKey'], function(result) {
+        if (!result.openaiApiKey) {
+            showError('Please set your OpenAI API key in settings to use this extension');
+            summarizeBtn.disabled = true;
+        }
+    });
+
     // Open settings page when settings link is clicked
     settingsLink.addEventListener('click', function(e) {
         e.preventDefault();
