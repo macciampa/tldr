@@ -141,6 +141,13 @@
         <span>Use dark theme</span>
     </div>
 
+    <div class="settings-group">
+        <div class="setting-title">OpenAI API Key</div>
+        <div class="setting-description">Enter your OpenAI API key to enable the summarization feature.</div>
+        <input type="password" id="apiKey" placeholder="sk-..." style="width: 100%; padding: 8px; margin: 8px 0; border: 1px solid var(--border-color); border-radius: 4px; background-color: var(--bg-color); color: var(--text-color);">
+        <div class="setting-description" style="font-size: 12px; color: var(--text-color); opacity: 0.7;">Your API key is stored locally and never sent to our servers.</div>
+    </div>
+
     <div id="status" class="status success">Settings saved!</div>
 
     <script src="settings.js"></script>

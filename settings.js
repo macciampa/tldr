@@ -1,12 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     const bulletPointsToggle = document.getElementById('bulletPoints');
     const darkThemeToggle = document.getElementById('darkTheme');
+    const apiKeyInput = document.getElementById('apiKey');
     const statusDiv = document.getElementById('status');
 
     // Load saved settings
-    chrome.storage.sync.get(['useBulletPoints', 'useDarkTheme'], function(result) {
+    chrome.storage.sync.get(['useBulletPoints', 'useDarkTheme', 'openaiApiKey'], function(result) {
         bulletPointsToggle.checked = result.useBulletPoints || false;
         darkThemeToggle.checked = result.useDarkTheme || false;
+        apiKeyInput.value = result.openaiApiKey || '';
         applyTheme(result.useDarkTheme || false);
     });
 
@@ -14,7 +16,8 @@ document.addEventListener('DOMContentLoaded', function() {
     function saveSettings() {
         const settings = {
             useBulletPoints: bulletPointsToggle.checked,
-            useDarkTheme: darkThemeToggle.checked
+            useDarkTheme: darkThemeToggle.checked,
+            openaiApiKey: apiKeyInput.value
         };
 
         chrome.storage.sync.set(settings, function() {
@@ -37,4 +40,5 @@ document.addEventListener('DOMContentLoaded', function() {
         applyTheme(darkThemeToggle.checked);
         saveSettings();
     });
+    apiKeyInput.addEventListener('change', saveSettings);
 }); 

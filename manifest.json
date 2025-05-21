@@ -2,9 +2,13 @@
   "manifest_version": 3,
   "name": "TLDR",
   "version": "1.0",
-  "description": "Save time and energy with our quick and easy summaries",
+  "description": "Save time and energy with quick and easy summaries",
   "permissions": [
-    "storage"
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*"
   ],
   "action": {
     "default_popup": "popup.html",

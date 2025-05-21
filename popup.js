@@ -15,9 +15,6 @@ document.addEventListener('DOMContentLoaded', function() {
         chrome.runtime.openOptionsPage();
     });
 
-    // AWS Lambda endpoint URL
-    const LAMBDA_URL = 'https://rvpdzimdmnj5gmdjkw6fauxmha0kqwnz.lambda-url.us-east-2.on.aws/';
-
     // Load theme preference
     chrome.storage.sync.get(['useDarkTheme'], function(result) {
         if (result.useDarkTheme) {
@@ -46,34 +43,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 2000);
     }
 
-    async function getApiKey() {
-        try {
-            const response = await fetch(LAMBDA_URL);
-            if (!response.ok) {
-                throw new Error('Failed to fetch API key');
-            }
-            const data = await response.json();
-            return data.key;
-        } catch (error) {
-            console.error('Error fetching API key:', error);
-            throw error;
-        }
-    }
-
     summarizeBtn.addEventListener('click', async function() {
         setLoading(true);
         summaryBox.textContent = '';
 
         try {
-            // Get user preferences
-            const preferences = await chrome.storage.sync.get(['useBulletPoints']);
+            // Get user preferences and API key
+            const preferences = await chrome.storage.sync.get(['useBulletPoints', 'openaiApiKey']);
             const useBulletPoints = preferences.useBulletPoints || false;
-
-            // Get API key from AWS
-            const apiKey = await getApiKey();
+            const apiKey = preferences.openaiApiKey;
             
             if (!apiKey) {
-                throw new Error('Failed to get API key');
+                throw new Error('Please enter your OpenAI API key in the settings page');
             }
 
             // Get the active tab
@@ -132,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showSuccess();
         } catch (error) {
             console.error('Error:', error);
-            showError('Error generating summary. Please try again later.');
+            showError(error.message || 'Error generating summary. Please try again later.');
         } finally {
             setLoading(false);
         }
